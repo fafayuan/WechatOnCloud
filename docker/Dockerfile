@@ -62,19 +62,19 @@ ENV LANG=zh_CN.UTF-8 \
 #      用 e.data 直发成品字符串（详见 woc-www-patch.sh / woc-ime.pl）。
 # 注意：实际加载的是 webpack 产物 dist/main.bundle.js（app/ui.js 是未打包源码、运行时不加载），故必须改 bundle。
 COPY woc-www-patch.sh woc-ime.pl /woc/
-RUN chmod +x /woc/woc-www-patch.sh && /woc/woc-www-patch.sh
+RUN chmod 755 /woc/woc-www-patch.sh && chmod 644 /woc/woc-ime.pl && /woc/woc-www-patch.sh
 
 # 微信下载/解压控制脚本（运行时由面板经 docker exec 触发，状态写入数据卷 /config/.woc-state）
 COPY wechat-ctl.sh /woc/wechat-ctl.sh
-RUN chmod +x /woc/wechat-ctl.sh
+RUN chmod 755 /woc/wechat-ctl.sh
 
 # openbox 会话启动时执行此脚本：等待微信就绪 + 常驻拉起微信 + 最小化自动复原看守
 COPY autostart /defaults/autostart
-RUN chmod +x /defaults/autostart
+RUN chmod 755 /defaults/autostart
 
 # 启动钩子：每次启动用镜像内最新 autostart 覆盖数据卷旧副本（否则旧实例升级后用不上新逻辑）
 COPY woc-update-autostart /custom-cont-init.d/01-woc-autostart
-RUN chmod +x /custom-cont-init.d/01-woc-autostart
+RUN chmod 755 /custom-cont-init.d/01-woc-autostart
 
 # 3000 = HTTP web 客户端, 3001 = HTTPS
 EXPOSE 3000 3001
