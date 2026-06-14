@@ -1397,15 +1397,6 @@ button {
   flex: none;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(150deg, var(--wx-green), var(--wx-green-dark));
-  color: #fff;
-  font-weight: 700;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
 }
 .sb-dot {
   position: absolute;
@@ -1562,15 +1553,6 @@ button {
   flex: none;
   width: 42px;
   height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(150deg, var(--wx-green), var(--wx-green-dark));
-  color: #fff;
-  font-weight: 700;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
 }
 .home-card-main {
   position: relative;

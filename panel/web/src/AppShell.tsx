@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth';
 import { useUI, PasswordInput } from './ui';
-import { api, type InstanceWithStatus } from './api';
+import { api, appProfile, type InstanceWithStatus } from './api';
+import { InstanceIcon } from './AppIcon';
 import InstanceView from './pages/Desktop';
 import Admin from './pages/Admin';
 
@@ -175,7 +176,7 @@ function Sidebar({ collapsed, onToggleCollapsed }: { collapsed: boolean; onToggl
         </button>
       </nav>
 
-      {!collapsed && <div className="sb-section">微信实例</div>}
+      {!collapsed && <div className="sb-section">实例</div>}
       <div className="sb-list">
         {instances.length === 0 && !collapsed && <div className="sb-empty">暂无可用实例</div>}
         {instances.map((inst) => {
@@ -184,7 +185,7 @@ function Sidebar({ collapsed, onToggleCollapsed }: { collapsed: boolean; onToggl
           return (
             <button key={inst.id} className={'sb-item sb-inst' + (on ? ' on' : '')} onClick={() => go(`/i/${inst.id}`)} title={inst.name}>
               <span className="sb-avatar">
-                {inst.name.slice(0, 1)}
+                <InstanceIcon icon={inst.icon} appType={inst.appType} size={34} radius={10} />
                 <span className={'sb-dot ' + st.cls} />
               </span>
               {!collapsed && <span className="sb-label">{inst.name}</span>}
@@ -252,7 +253,7 @@ function HomeView({ onOpenMenu, onChangePassword }: { onOpenMenu: () => void; on
         )}
 
         <div className="section-row">
-          <span className="section-title">我的微信实例</span>
+          <span className="section-title">我的实例</span>
           {isAdmin && (
             <button className="btn-text" onClick={() => nav('/admin')}>
               管理 ›
@@ -265,21 +266,24 @@ function HomeView({ onOpenMenu, onChangePassword }: { onOpenMenu: () => void; on
             <div className="empty-blob">
               <img src="/favicon.svg" alt="" />
             </div>
-            <div className="empty-title">还没有微信实例</div>
-            <div className="empty-sub">{isAdmin ? '去「管理」新建一个微信实例' : '请联系管理员为你分配实例'}</div>
+            <div className="empty-title">还没有实例</div>
+            <div className="empty-sub">{isAdmin ? '去「管理」新建一个实例' : '请联系管理员为你分配实例'}</div>
           </div>
         ) : (
           <div className="inst-grid">
             {instances.map((inst) => {
               const st = statusOf(inst);
+              const prof = appProfile(inst.appType);
               const meta = inst.wechat.installed
-                ? `微信 ${inst.wechat.version || ''}`.trim()
-                : inst.runtime === 'running'
-                  ? '待下载安装微信'
+                ? `${prof.label} ${inst.wechat.version || ''}`.trim()
+                : inst.runtime === 'running' && prof.needsInstall
+                  ? `待下载安装${prof.label}`
                   : '';
               return (
                 <button key={inst.id} className="home-card" onClick={() => nav(`/i/${inst.id}`)}>
-                  <span className="home-card-av">{inst.name.slice(0, 1)}</span>
+                  <span className="home-card-av">
+                    <InstanceIcon icon={inst.icon} appType={inst.appType} size={42} radius={12} />
+                  </span>
                   <span className="home-card-main">
                     <span className="home-card-name">{inst.name}</span>
                     <span className="home-card-meta">

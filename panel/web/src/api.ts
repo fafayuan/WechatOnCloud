@@ -48,6 +48,7 @@ export interface PanelInstance {
   id: string;
   name: string;
   appType?: AppType; // 缺省（老实例）= wechat
+  icon?: string; // 自定义图标：data: 图片 / builtin:<key>；缺省按 appType 取默认图标
   createdAt: string;
   createdBy: string;
   memSoftLimitMB?: number;

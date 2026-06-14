@@ -43,6 +43,7 @@ export interface Instance {
   id: string; // 短 id，用于容器/卷命名
   name: string; // 显示名
   appType?: AppType; // 承载的应用类型；缺省（老实例）= wechat（见 instanceAppType）
+  icon?: string; // 自定义图标：data: 图片(base64) 或 builtin:<key>；缺省按 appType 取默认图标
   containerName: string; // woc-wx-<id>
   volumeName: string; // woc-data-<id>
   kasmUser: string; // 随机生成，服务端注入反代，永不下发前端
@@ -216,6 +217,7 @@ export function publicInstance(i: Instance) {
     id: i.id,
     name: i.name,
     appType: instanceAppType(i), // 老实例无字段时回退 wechat
+    icon: i.icon,
     createdAt: i.createdAt,
     createdBy: i.createdBy,
     memSoftLimitMB: i.memSoftLimitMB,
